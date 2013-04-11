@@ -21,40 +21,33 @@ import java.math.BigInteger
 
 object PBKDF2 {
 
-  def apply(password: String, salt: String, iterations: Int, dkLength: Int): String =
-    new PBKDF2(password, salt, iterations, dkLength).calculate
-}
+  def apply(password: String, salt: String, iterations: Int, dkLength: Int): String = {
+   
+    val mac = crypto.Mac.getInstance("HmacSHA1")
+    val saltBuff = salt.getBytes("UTF8")
+    mac.init(new crypto.spec.SecretKeySpec(password.getBytes("UTF8"), "RAW"))
 
-class PBKDF2(val password: String, val salt: String, val iterations: Int, val dkLength: Int) {
+    def bytesFromInt(i: Int) = Array((i >>> 24).toByte, (i >>> 16).toByte, (i >>> 8).toByte, i.toByte)
 
-  val mac = crypto.Mac.getInstance("HmacSHA1")
-  val saltBuff = salt.getBytes("UTF8")
-  mac.init(new crypto.spec.SecretKeySpec(password.getBytes("UTF8"), "RAW"))
+    def xor(buff1: Array[Byte], buff2: Array[Byte]): Array[Byte] = buff1.zip(buff2) map { case (b1, b2) => (b1 ^ b2).toByte }
 
-  def bytesFromInt(i: Int) = Array((i >>> 24).toByte, (i >>> 16).toByte, (i >>> 8).toByte, i.toByte)
+    // pseudo-random function defined in the spec
+    def prf(buff: Array[Byte]) = mac.doFinal(buff)
 
-  def xor(buff1: Array[Byte], buff2: Array[Byte]): Array[Byte] =
-    buff1.zip(buff2) map { case (b1, b2) => (b1 ^ b2).toByte }
+    // this is a translation of the helper function "F" defined in the spec
+    def calculateBlock(blockNum: Int): Array[Byte] = {
+      // u_1
+      val u_1 = prf(saltBuff ++ bytesFromInt(blockNum))
 
-  // pseudo-random function defined in the spec
-  def prf(buff: Array[Byte]) = mac.doFinal(buff)
+      // u_2 through u_c : calculate u_n and xor it with the previous value
+      def u_n(u: Array[Byte]): Stream[Array[Byte]] = u #:: u_n(prf(u))
+      
+      u_n(u_1).take(iterations).reduceLeft(xor(_, _))
+    }
 
-  // this is a translation of the helper function "F" defined in the spec
-  def calculateBlock(blockNum: Int): Array[Byte] = {
-    // u_1
-    val u_1 = prf(saltBuff ++ bytesFromInt(blockNum))
-
-    // u_2 through u_c : calculate u_n and xor it with the previous value
-    def u_n(u: Array[Byte]): Stream[Array[Byte]] = u #:: u_n(prf(u))
-    u_n(u_1).take(iterations).reduceLeft(xor(_, _))
-  }
-
-  // the bit that actually does the calculating
-  def calculate = {
     // how many blocks we'll need to calculate (the last may be truncated)
     val blocksNeeded = (dkLength.toFloat / 20).ceil.toInt
 
     (1 to blocksNeeded).map(calculateBlock(_).map("%02x" format _)).flatten.mkString.substring(0, dkLength * 2)
   }
-
 }
