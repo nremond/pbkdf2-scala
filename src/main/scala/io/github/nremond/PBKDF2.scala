@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Nicolas Rémond (@nremond)
+ *  Copyright 2012 Nicolas Rémond (@nremond)
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,17 +16,31 @@
 
 package io.github.nremond
 
+import java.nio.{ByteBuffer, IntBuffer}
+
+import scala.Array.canBuildFrom
+
 import javax.crypto
-import java.math.BigInteger
-import scala.annotation.tailrec
-import java.nio.ByteBuffer
-import scala.collection.mutable.BitSet
-import java.nio.LongBuffer
-import java.nio.IntBuffer
 
 object PBKDF2 {
 
-  def apply(password: String, salt: String, iterations: Int = 10000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA256"): String = {
+  /**
+   * Implements PBKDF2 as defined in RFC 2898, section 5.2
+   *
+   * HMAC+SHA256 is used as the default pseudo random function.
+   *
+   * Right now 20,000 iterations is the strictly recommended default minimum. It takes 100ms on a i5 M-580 2.6GHz CPU.
+   * The minimum increases every year, please that in mind.
+   * You may want to use the ScalaMeter test to tune your settings.
+   *
+   * @password : the password to encrypt
+   * @salt : the RFC 2898 recommends salt that is at least 64 bits long
+   * @iterations : the number of encryption iterations
+   * @dkLength : derived-key length
+   * @cryptoAlgo : HMAC+SHA256 is the default as HMAC+SHA1 is now considered weak
+   * @return the encrypted password
+   */
+  def apply(password: String, salt: String, iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA256"): String = {
 
     val mac = crypto.Mac.getInstance(cryptoAlgo)
     val saltBuff = salt.getBytes("UTF8")
