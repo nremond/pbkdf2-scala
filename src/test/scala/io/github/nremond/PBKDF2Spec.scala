@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.github.nremond
+package io.github.nremond
 
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
@@ -31,23 +31,23 @@ import org.scalatest.matchers.ShouldMatchers
 class PBKDF2Spec extends FlatSpec with ShouldMatchers {
 
   it should "work with the 1st test vector" in {
-    PBKDF2("password", "salt", 2, 20) should equal("ea6c014dc72d6f8ccd1ed92ace1d41f0d8de8957")
+    PBKDF2("password", "salt", 2, 20, "HmacSHA1") should equal("ea6c014dc72d6f8ccd1ed92ace1d41f0d8de8957")
   }
 
   it should "work with the 2nd test vector" in {
-    PBKDF2("password", "salt", 4096, 20) should equal("4b007901b765489abead49d926f721d065a429c1")
+    PBKDF2("password", "salt", 4096, 20, "HmacSHA1") should equal("4b007901b765489abead49d926f721d065a429c1")
   }
 
   // It takes too long, I'm commenting it. 
   //  it should " "work with the 3rd test vector"" in {
-  //    PBKDF2("password", "salt", 16777216, 20) should equal("eefe3d61cd4da4e4e9945b3d6ba2158c2634e984")
+  //    sha1Pbkdf2.encrypt("password", "salt", 16777216, 20) should equal("eefe3d61cd4da4e4e9945b3d6ba2158c2634e984")
   //  }
 
   it should "work with the 4th test vector" in {
-    PBKDF2("passwordPASSWORDpassword", "saltSALTsaltSALTsaltSALTsaltSALTsalt", 4096, 25) should equal("3d2eec4fe41c849b80c8d83662c0e44a8b291a964cf2f07038")
+    PBKDF2("passwordPASSWORDpassword", "saltSALTsaltSALTsaltSALTsaltSALTsalt", 4096, 25, "HmacSHA1") should equal("3d2eec4fe41c849b80c8d83662c0e44a8b291a964cf2f07038")
   }
 
   it should "work with the 5th test vector" in {
-    PBKDF2("pass\0word", "sa\0lt", 4096, 16) should equal("56fa6aa75548099dcc37d7f03425e0c3")
+    PBKDF2("pass\0word", "sa\0lt", 4096, 16, "HmacSHA1") should equal("56fa6aa75548099dcc37d7f03425e0c3")
   }
 }

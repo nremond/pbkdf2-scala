@@ -14,22 +14,30 @@
  *  limitations under the License.
  */
 
-package com.github.nremond
+package io.github.nremond
 
 import javax.crypto
 import java.math.BigInteger
+import scala.annotation.tailrec
+import java.nio.ByteBuffer
+import scala.collection.mutable.BitSet
+import java.nio.LongBuffer
+import java.nio.IntBuffer
 
 object PBKDF2 {
 
-  def apply(password: String, salt: String, iterations: Int, dkLength: Int): String = {
-   
-    val mac = crypto.Mac.getInstance("HmacSHA1")
+  def apply(password: String, salt: String, iterations: Int = 10000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA256"): String = {
+
+    val mac = crypto.Mac.getInstance(cryptoAlgo)
     val saltBuff = salt.getBytes("UTF8")
     mac.init(new crypto.spec.SecretKeySpec(password.getBytes("UTF8"), "RAW"))
 
-    def bytesFromInt(i: Int) = Array((i >>> 24).toByte, (i >>> 16).toByte, (i >>> 8).toByte, i.toByte)
+    def bytesFromInt(i: Int) = ByteBuffer.allocate(4).putInt(i).array
 
-    def xor(buff1: Array[Byte], buff2: Array[Byte]): Array[Byte] = buff1.zip(buff2) map { case (b1, b2) => (b1 ^ b2).toByte }
+    def xor(buff: IntBuffer, a2: Array[Byte]) {
+      val b2 = ByteBuffer.wrap(a2).asIntBuffer
+      buff.array.indices.foreach(i => buff.put(i, buff.get(i) ^ b2.get(i)))
+    }
 
     // pseudo-random function defined in the spec
     def prf(buff: Array[Byte]) = mac.doFinal(buff)
@@ -39,10 +47,19 @@ object PBKDF2 {
       // u_1
       val u_1 = prf(saltBuff ++ bytesFromInt(blockNum))
 
-      // u_2 through u_c : calculate u_n and xor it with the previous value
-      def u_n(u: Array[Byte]): Stream[Array[Byte]] = u #:: u_n(prf(u))
-      
-      u_n(u_1).take(iterations).reduceLeft(xor(_, _))
+      val buff = IntBuffer.allocate(u_1.length / 4).put(ByteBuffer.wrap(u_1).asIntBuffer)
+      var u = u_1
+      var iter = 1
+      while (iter < iterations) {
+        // u_2 through u_c : calculate u_n and xor it with the previous value
+        u = prf(u)
+        xor(buff, u)
+        iter += 1
+      }
+
+      val ret = ByteBuffer.allocate(u_1.length)
+      buff.array.foreach { case i => ret.putInt(i) }
+      ret.array
     }
 
     // how many blocks we'll need to calculate (the last may be truncated)
