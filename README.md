@@ -1,4 +1,4 @@
-A `pbkdf2` implementation in Scala
+A *PBKDF2* implementation in Scala
 ==================================
 
 pbkdf2-scala is an implementation of pbkdf2 [1] in scala.
