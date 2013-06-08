@@ -6,9 +6,6 @@
 For using it, you can add the following dependency in SBT.
 
 ```Scala
-resolvers += "Sonatype OSS" at
-  "https://oss.sonatype.org/content/groups/public"
-
 libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.2"
 ```
 
