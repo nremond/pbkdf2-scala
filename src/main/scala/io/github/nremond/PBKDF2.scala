@@ -30,7 +30,7 @@ object PBKDF2 {
    * HMAC+SHA256 is used as the default pseudo random function.
    *
    * Right now 20,000 iterations is the strictly recommended default minimum. It takes 100ms on a i5 M-580 2.6GHz CPU.
-   * The minimum increases every year, please that in mind.
+   * The minimum increases every year, please keep that in mind.
    * You may want to use the ScalaMeter test to tune your settings.
    *
    * @password : the password to encrypt
