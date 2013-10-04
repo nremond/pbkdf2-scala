@@ -4,7 +4,7 @@ organization := "io.github.nremond"
 
 version := "0.3-SNAPSHOT"                                                       
 
-scalaVersion := "2.10.2"   
+scalaVersion := "2.10.3"   
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
