@@ -4,7 +4,7 @@ organization := "io.github.nremond"
 
 version := "0.3-SNAPSHOT"                                                       
 
-scalaVersion := "2.10.2"   
+scalaVersion := "2.10.3"   
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
@@ -12,7 +12,7 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 /// ScalaTest
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.0.M5b" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "2.0.RC2" % "test"
 
 
 /// ScalaMeter
