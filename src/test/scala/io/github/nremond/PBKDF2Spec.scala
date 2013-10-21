@@ -16,8 +16,7 @@
 
 package io.github.nremond
 
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{ FlatSpec, Matchers }
 
 /**
  * This spec contains test vectors for the Public-Key Cryptography
@@ -28,7 +27,7 @@ import org.scalatest.matchers.ShouldMatchers
  * See RFC6070 (http://tools.ietf.org/html/rfc6070)
  *
  */
-class PBKDF2Spec extends FlatSpec with ShouldMatchers {
+class PBKDF2Spec extends FlatSpec with Matchers {
 
   it should "work with the 1st test vector" in {
     PBKDF2("password", "salt", 2, 20, "HmacSHA1") should equal("ea6c014dc72d6f8ccd1ed92ace1d41f0d8de8957")
