@@ -12,7 +12,7 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 /// ScalaTest
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.0.RC2" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "2.0" % "test"
 
 
 /// ScalaMeter
