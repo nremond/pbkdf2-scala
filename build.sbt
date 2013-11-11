@@ -12,14 +12,14 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 /// ScalaTest
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.0.RC2" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "2.0" % "test"
 
 
 /// ScalaMeter
 resolvers += "Sonatype OSS Snapshots" at
   "https://oss.sonatype.org/content/repositories/snapshots"
 
-libraryDependencies += "com.github.axel22" %% "scalameter" % "0.3" % "test"
+libraryDependencies += "com.github.axel22" %% "scalameter" % "0.4" % "test"
 
 testFrameworks += new TestFramework("org.scalameter.ScalaMeterFramework")
 
