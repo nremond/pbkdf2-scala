@@ -4,5 +4,7 @@
 .project
 .settings
 .worksheet
+.idea
+.idea_modules
 project
 target
