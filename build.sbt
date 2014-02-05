@@ -19,11 +19,9 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "2.0.RC2" % "test"
 resolvers += "Sonatype OSS Snapshots" at
   "https://oss.sonatype.org/content/repositories/snapshots"
 
-libraryDependencies += "com.github.axel22" %% "scalameter" % "0.3" % "test"
+libraryDependencies += "com.github.axel22" %% "scalameter" % "0.4" % "test"
 
 testFrameworks += new TestFramework("org.scalameter.ScalaMeterFramework")
-
-
 
 
 /// Publishing
