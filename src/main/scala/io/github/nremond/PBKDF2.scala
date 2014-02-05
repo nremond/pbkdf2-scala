@@ -34,7 +34,7 @@ object PBKDF2 {
    * You may want to use the ScalaMeter test to tune your settings.
    *
    * @param password the password to encrypt
-   * @param salt the RFC 2898 recommends salt that is at least 64 bits long
+   * @param the NIST recommends salt that is at least 128 bits(16 bytes) long (http://csrc.nist.gov/publications/nistpubs/800-132/nist-sp800-132.pdf)
    * @param iterations the number of encryption iterations
    * @param dkLength derived-key length
    * @param cryptoAlgo HMAC+SHA256 is the default as HMAC+SHA1 is now considered weak
