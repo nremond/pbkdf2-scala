@@ -33,11 +33,11 @@ object PBKDF2 {
    * The minimum increases every year, please keep that in mind.
    * You may want to use the ScalaMeter test to tune your settings.
    *
-   * @password : the password to encrypt
-   * @salt : the RFC 2898 recommends salt that is at least 64 bits long
-   * @iterations : the number of encryption iterations
-   * @dkLength : derived-key length
-   * @cryptoAlgo : HMAC+SHA256 is the default as HMAC+SHA1 is now considered weak
+   * @param password the password to encrypt
+   * @param salt the RFC 2898 recommends salt that is at least 64 bits long
+   * @param iterations the number of encryption iterations
+   * @param dkLength derived-key length
+   * @param cryptoAlgo HMAC+SHA256 is the default as HMAC+SHA1 is now considered weak
    * @return the encrypted password
    */
   def apply(password: String, salt: String, iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA256"): String = {
