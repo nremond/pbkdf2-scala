@@ -72,7 +72,7 @@ object PBKDF2 {
       }
 
       val ret = ByteBuffer.allocate(u_1.length)
-      buff.array.foreach { case i => ret.putInt(i) }
+      buff.array.foreach(ret.putInt)
       ret.array
     }
 
