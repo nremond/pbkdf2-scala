@@ -21,7 +21,7 @@ a longer bit length and in addition, NIST has [stated][NIST] that SHA-1 should b
 due to concerns over recent cryptanalytic attacks.
 
 
-## Setting the number of *iterations* ##
+## Setting the number of iterations ##
 
 Choosing the correct value for this parameter is thus a trade-off: it
 should be set as high as possible, to make attacks as difficult as possible,
