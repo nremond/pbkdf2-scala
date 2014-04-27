@@ -34,11 +34,11 @@ object PBKDF2 {
    * You may want to use the ScalaMeter test to tune your settings.
    *
    * @param password the password to encrypt
-   * @param the NIST recommends salt that is at least 128 bits(16 bytes) long (http://csrc.nist.gov/publications/nistpubs/800-132/nist-sp800-132.pdf)
+   * @param salt the NIST recommends salt that is at least 128 bits(16 bytes) long (http://csrc.nist.gov/publications/nistpubs/800-132/nist-sp800-132.pdf)
    * @param iterations the number of encryption iterations
    * @param dkLength derived-key length
    * @param cryptoAlgo HMAC+SHA256 is the default as HMAC+SHA1 is now considered weak
-   * @return the encrypted password
+   * @return the hashed password
    */
   def apply(password: String, salt: String, iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA256"): String = {
 
