@@ -2,7 +2,7 @@ name := "pbkdf2-scala"
 
 organization := "io.github.nremond"
 
-version := "0.3-SNAPSHOT"
+version := "0.3"
 
 scalaVersion := "2.11.0"
 
