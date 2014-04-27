@@ -1,10 +1,12 @@
 name := "pbkdf2-scala"
 
-organization := "io.github.nremond"                                        
+organization := "io.github.nremond"
 
-version := "0.3-SNAPSHOT"                                                       
+version := "0.3-SNAPSHOT"
 
-scalaVersion := "2.10.4"   
+scalaVersion := "2.11.0"
+
+crossScalaVersions := Seq("2.11.0", "2.10.4")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
@@ -12,7 +14,7 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 /// ScalaTest
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.0" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "2.1.4" % "test"
 
 
 /// Publishing
