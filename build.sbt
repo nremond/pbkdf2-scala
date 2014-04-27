@@ -15,15 +15,6 @@ resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/release
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.0" % "test"
 
 
-/// ScalaMeter
-resolvers += "Sonatype OSS Snapshots" at
-  "https://oss.sonatype.org/content/repositories/snapshots"
-
-libraryDependencies += "com.github.axel22" %% "scalameter" % "0.4" % "test"
-
-testFrameworks += new TestFramework("org.scalameter.ScalaMeterFramework")
-
-
 /// Publishing
 publishTo <<= version { v: String =>
   val nexus = "https://oss.sonatype.org/"
