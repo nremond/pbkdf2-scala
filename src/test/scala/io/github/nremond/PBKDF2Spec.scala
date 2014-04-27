@@ -47,6 +47,6 @@ class PBKDF2Spec extends FlatSpec with Matchers {
   }
 
   it should "work with the 5th test vector" in {
-    PBKDF2("pass\0word", "sa\0lt", 4096, 16, "HmacSHA1") should equal("56fa6aa75548099dcc37d7f03425e0c3")
+    PBKDF2("pass\u0000word", "sa\u0000lt", 4096, 16, "HmacSHA1") should equal("56fa6aa75548099dcc37d7f03425e0c3")
   }
 }
