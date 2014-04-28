@@ -1,12 +1,12 @@
 # PBKDF2 #
 
-*pbkdf2-scala* is an implementation of [PBKDF2] in scala.
+*pbkdf2-scala* is an implementation of [PBKDF2] in Scala. It is cross-compiled for Scala 2.10 and 2.11.
 
 
 For using it, you can add the following dependency in SBT.
 
 ```Scala
-libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.2"
+libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.3"
 ```
 
 
