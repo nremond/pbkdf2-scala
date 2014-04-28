@@ -18,6 +18,8 @@ package io.github.nremond
 
 import org.scalatest.{ FlatSpec, Matchers }
 
+import scala.io.Codec.UTF8
+
 /**
  * This spec contains test vectors for the Public-Key Cryptography
  * Standards (PKCS) #5 Password-Based Key Derivation Function 2 (PBKDF2)
@@ -29,12 +31,15 @@ import org.scalatest.{ FlatSpec, Matchers }
  */
 class PBKDF2Spec extends FlatSpec with Matchers {
 
+  def pbkdf2(password: String, salt: String, iterations: Int , dkLength: Int, cryptoAlgo: String ) = 
+   toHex(PBKDF2(password.getBytes(UTF8.charSet), salt.getBytes(UTF8.charSet), iterations, dkLength, cryptoAlgo))
+
   it should "work with the 1st test vector" in {
-    PBKDF2("password", "salt", 2, 20, "HmacSHA1") should equal("ea6c014dc72d6f8ccd1ed92ace1d41f0d8de8957")
+    pbkdf2("password", "salt", 2, 20, "HmacSHA1") should equal("ea6c014dc72d6f8ccd1ed92ace1d41f0d8de8957")
   }
 
   it should "work with the 2nd test vector" in {
-    PBKDF2("password", "salt", 4096, 20, "HmacSHA1") should equal("4b007901b765489abead49d926f721d065a429c1")
+    pbkdf2("password", "salt", 4096, 20, "HmacSHA1") should equal("4b007901b765489abead49d926f721d065a429c1")
   }
 
   // It takes too long, I'm commenting it. 
@@ -43,10 +48,10 @@ class PBKDF2Spec extends FlatSpec with Matchers {
   //  }
 
   it should "work with the 4th test vector" in {
-    PBKDF2("passwordPASSWORDpassword", "saltSALTsaltSALTsaltSALTsaltSALTsalt", 4096, 25, "HmacSHA1") should equal("3d2eec4fe41c849b80c8d83662c0e44a8b291a964cf2f07038")
+    pbkdf2("passwordPASSWORDpassword", "saltSALTsaltSALTsaltSALTsaltSALTsalt", 4096, 25, "HmacSHA1") should equal("3d2eec4fe41c849b80c8d83662c0e44a8b291a964cf2f07038")
   }
 
   it should "work with the 5th test vector" in {
-    PBKDF2("pass\u0000word", "sa\u0000lt", 4096, 16, "HmacSHA1") should equal("56fa6aa75548099dcc37d7f03425e0c3")
+    pbkdf2("pass\u0000word", "sa\u0000lt", 4096, 16, "HmacSHA1") should equal("56fa6aa75548099dcc37d7f03425e0c3")
   }
 }

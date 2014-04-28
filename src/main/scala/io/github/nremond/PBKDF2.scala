@@ -1,5 +1,5 @@
 /**
- *  Copyright 2012 Nicolas Rémond (@nremond)
+ *  Copyright 2012-2014 Nicolas Rémond (@nremond)
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@
 package io.github.nremond
 
 import java.nio.{ByteBuffer, IntBuffer}
-
-import scala.Array.canBuildFrom
-
 import javax.crypto
+
+import scala.io.Codec.UTF8
+
 
 object PBKDF2 {
 
@@ -31,7 +31,6 @@ object PBKDF2 {
    *
    * Right now 20,000 iterations is the strictly recommended default minimum. It takes 100ms on a i5 M-580 2.6GHz CPU.
    * The minimum increases every year, please keep that in mind.
-   * You may want to use the ScalaMeter test to tune your settings.
    *
    * @param password the password to encrypt
    * @param salt the NIST recommends salt that is at least 128 bits(16 bytes) long (http://csrc.nist.gov/publications/nistpubs/800-132/nist-sp800-132.pdf)
@@ -40,11 +39,10 @@ object PBKDF2 {
    * @param cryptoAlgo HMAC+SHA256 is the default as HMAC+SHA1 is now considered weak
    * @return the hashed password
    */
-  def apply(password: String, salt: String, iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA256"): String = {
+  def apply(password: Array[Byte], salt: Array[Byte], iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA256"): Array[Byte] = {
 
     val mac = crypto.Mac.getInstance(cryptoAlgo)
-    val saltBuff = salt.getBytes("UTF8")
-    mac.init(new crypto.spec.SecretKeySpec(password.getBytes("UTF8"), "RAW"))
+    mac.init(new crypto.spec.SecretKeySpec(password, "RAW"))
 
     def bytesFromInt(i: Int) = ByteBuffer.allocate(4).putInt(i).array
 
@@ -59,7 +57,7 @@ object PBKDF2 {
     // this is a translation of the helper function "F" defined in the spec
     def calculateBlock(blockNum: Int): Array[Byte] = {
       // u_1
-      val u_1 = prf(saltBuff ++ bytesFromInt(blockNum))
+      val u_1 = prf(salt ++ bytesFromInt(blockNum))
 
       val buff = IntBuffer.allocate(u_1.length / 4).put(ByteBuffer.wrap(u_1).asIntBuffer)
       var u = u_1
@@ -79,6 +77,6 @@ object PBKDF2 {
     // how many blocks we'll need to calculate (the last may be truncated)
     val blocksNeeded = (dkLength.toFloat / 20).ceil.toInt
 
-    (1 to blocksNeeded).map(calculateBlock(_).map("%02x" format _)).flatten.mkString.substring(0, dkLength * 2)
+    (1 to blocksNeeded).iterator.map(calculateBlock).flatten.take(dkLength).toArray
   }
 }
