@@ -1,3 +1,7 @@
+
+import scalariform.formatter.preferences._
+
+
 name := "pbkdf2-scala"
 
 organization := "io.github.nremond"
@@ -15,6 +19,17 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.1.4" % "test"
+
+
+/// Scalariform
+
+scalariformSettings
+
+ScalariformKeys.preferences := ScalariformKeys.preferences.value
+      .setPreference(DoubleIndentClassDeclaration, true)
+      .setPreference(AlignParameters, true)
+      .setPreference(AlignSingleLineCaseStatements, true)
+      .setPreference(IndentLocalDefs, true)
 
 
 /// Publishing

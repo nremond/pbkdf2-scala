@@ -31,8 +31,8 @@ import scala.io.Codec.UTF8
  */
 class PBKDF2Spec extends FlatSpec with Matchers {
 
-  def pbkdf2(password: String, salt: String, iterations: Int , dkLength: Int, cryptoAlgo: String ) = 
-   toHex(PBKDF2(password.getBytes(UTF8.charSet), salt.getBytes(UTF8.charSet), iterations, dkLength, cryptoAlgo))
+  def pbkdf2(password: String, salt: String, iterations: Int, dkLength: Int, cryptoAlgo: String) =
+    toHex(PBKDF2(password.getBytes(UTF8.charSet), salt.getBytes(UTF8.charSet), iterations, dkLength, cryptoAlgo))
 
   it should "work with the 1st test vector" in {
     pbkdf2("password", "salt", 2, 20, "HmacSHA1") should equal("ea6c014dc72d6f8ccd1ed92ace1d41f0d8de8957")

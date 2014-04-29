@@ -16,11 +16,10 @@
 
 package io.github.nremond
 
-import java.nio.{ByteBuffer, IntBuffer}
+import java.nio.{ ByteBuffer, IntBuffer }
 import javax.crypto
 
 import scala.io.Codec.UTF8
-
 
 object PBKDF2 {
 
@@ -44,35 +43,35 @@ object PBKDF2 {
     val mac = crypto.Mac.getInstance(cryptoAlgo)
     mac.init(new crypto.spec.SecretKeySpec(password, "RAW"))
 
-    def bytesFromInt(i: Int) = ByteBuffer.allocate(4).putInt(i).array
+      def bytesFromInt(i: Int) = ByteBuffer.allocate(4).putInt(i).array
 
-    def xor(buff: IntBuffer, a2: Array[Byte]) {
-      val b2 = ByteBuffer.wrap(a2).asIntBuffer
-      buff.array.indices.foreach(i => buff.put(i, buff.get(i) ^ b2.get(i)))
-    }
-
-    // pseudo-random function defined in the spec
-    def prf(buff: Array[Byte]) = mac.doFinal(buff)
-
-    // this is a translation of the helper function "F" defined in the spec
-    def calculateBlock(blockNum: Int): Array[Byte] = {
-      // u_1
-      val u_1 = prf(salt ++ bytesFromInt(blockNum))
-
-      val buff = IntBuffer.allocate(u_1.length / 4).put(ByteBuffer.wrap(u_1).asIntBuffer)
-      var u = u_1
-      var iter = 1
-      while (iter < iterations) {
-        // u_2 through u_c : calculate u_n and xor it with the previous value
-        u = prf(u)
-        xor(buff, u)
-        iter += 1
+      def xor(buff: IntBuffer, a2: Array[Byte]) {
+        val b2 = ByteBuffer.wrap(a2).asIntBuffer
+        buff.array.indices.foreach(i => buff.put(i, buff.get(i) ^ b2.get(i)))
       }
 
-      val ret = ByteBuffer.allocate(u_1.length)
-      buff.array.foreach(ret.putInt)
-      ret.array
-    }
+      // pseudo-random function defined in the spec
+      def prf(buff: Array[Byte]) = mac.doFinal(buff)
+
+      // this is a translation of the helper function "F" defined in the spec
+      def calculateBlock(blockNum: Int): Array[Byte] = {
+        // u_1
+        val u_1 = prf(salt ++ bytesFromInt(blockNum))
+
+        val buff = IntBuffer.allocate(u_1.length / 4).put(ByteBuffer.wrap(u_1).asIntBuffer)
+        var u = u_1
+        var iter = 1
+        while (iter < iterations) {
+          // u_2 through u_c : calculate u_n and xor it with the previous value
+          u = prf(u)
+          xor(buff, u)
+          iter += 1
+        }
+
+        val ret = ByteBuffer.allocate(u_1.length)
+        buff.array.foreach(ret.putInt)
+        ret.array
+      }
 
     // how many blocks we'll need to calculate (the last may be truncated)
     val blocksNeeded = (dkLength.toFloat / 20).ceil.toInt

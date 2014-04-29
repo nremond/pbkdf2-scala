@@ -1,8 +1,8 @@
 package io.github
 
 package object nremond {
-	
-  def toHex(buff: Array[Byte]):String = {
+
+  def toHex(buff: Array[Byte]): String = {
     val bi = new java.math.BigInteger(1, buff)
     val hex = bi.toString(16)
     val paddingLength = (buff.length * 2) - hex.size
