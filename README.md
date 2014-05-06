@@ -6,7 +6,7 @@
 For using it, you can add the following dependency in SBT.
 
 ```Scala
-libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.3"
+libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.4"
 ```
 
 
@@ -27,10 +27,7 @@ Choosing the correct value for this parameter is thus a trade-off: it
 should be set as high as possible, to make attacks as difficult as possible,
 without making legitimate applications unusably slow.  
 [Security Considerations section of RFC 3962][ITERS] provides a useful example 
-on how to consider that choice. 
-
-In the test source folder, the `PBKDF2Benchmark.scala` file is a useful benchmarking
-resource to help you tuning this paramater. 
+on how to consider that choice.
 
 The current default value is set to 20k. 
 
