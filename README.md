@@ -31,6 +31,31 @@ on how to consider that choice.
 
 The current default value is set to 20k. 
 
+## Using the library ##
+
+You can use the raw PBKDF2 function which as the following signature:
+
+```scala
+object PBKDF2 {
+  def apply(password: Array[Byte], 
+            salt: Array[Byte], 
+            iterations: Int = 20000, 
+            dkLength: Int = 32, 
+            cryptoAlgo: String = "HmacSHA256"): Array[Byte]
+}
+```
+
+Alternatively, you can use the following class that will handle the salting for you:
+
+```scala
+case class SecureHash(iterations: Int = 20000, 
+                      dkLength: Int = 32, 
+                      cryptoAlgo: String = "HmacSHA256") {
+  def createHash(password: String): String
+  def validatePassword(password: String, hashedPassword: String): Boolean
+}
+```
+
 ## License ##
 
 See the `license.txt` file for the terms under which it may be used and distributed.
