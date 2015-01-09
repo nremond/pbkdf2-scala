@@ -8,7 +8,7 @@ organization := "io.github.nremond"
 
 version := "0.4-SNAPSHOT"
 
-scalaVersion := "2.11.4"
+scalaVersion := "2.11.5"
 
 crossScalaVersions := Seq("2.11.4", "2.10.4")
 
