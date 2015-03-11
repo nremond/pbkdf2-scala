@@ -16,6 +16,8 @@
 
 package io.github.nremond
 
+import java.nio.ByteBuffer
+
 import org.scalatest._
 
 import scala.io.Codec.UTF8
@@ -40,6 +42,24 @@ class SecureHashSpec extends FlatSpec with Matchers with Inspectors {
     val password = "secret_password"
     val incorrectHash = "dead:beef"
     secureHash.validatePassword(password, incorrectHash) should be(false)
+  }
+
+  it should "encode the output" in {
+    val salt = ByteBuffer.allocate(3).put(0.toByte).array()
+    val out = SecureHash.encodeOutput(salt, salt, 22000, "Alg1")
+
+    out should be("s0$Alg1000055f0$AAAA$AAAA")
+  }
+
+  it should "decode  the output" in {
+    val Some((version, algo, iterations, salt, hash)) = SecureHash.decode("s0$000055f0Alg1$AAAA$AAAAAAAA")
+
+    version should be("s0")
+    algo should be("Alg1")
+    iterations should be(22000)
+    val zero = 0.toByte
+    salt should be(Array[Byte](zero, zero, zero))
+    hash should be(Array[Byte](zero, zero, zero, zero, zero, zero))
   }
 
 }
