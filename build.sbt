@@ -8,9 +8,9 @@ organization := "io.github.nremond"
 
 version := "0.4-SNAPSHOT"
 
-scalaVersion := "2.11.5"
+scalaVersion := "2.11.6"
 
-crossScalaVersions := Seq("2.11.4", "2.10.4")
+crossScalaVersions := Seq("2.11.6", "2.10.4")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
