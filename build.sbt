@@ -18,9 +18,8 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 /// ScalaTest
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.1.4" % "test"
-
-
+libraryDependencies ++= Seq ( "org.scalatest" %% "scalatest" % "2.1.4" % "test",
+                              "org.scalacheck" %% "scalacheck" % "1.12.2" % "test")
 /// Scalariform
 
 scalariformSettings
