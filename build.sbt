@@ -10,7 +10,7 @@ version := "0.4-SNAPSHOT"
 
 scalaVersion := "2.11.6"
 
-crossScalaVersions := Seq("2.11.6", "2.10.4")
+crossScalaVersions := Seq("2.11.6", "2.10.5")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
@@ -18,7 +18,7 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 /// ScalaTest
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-libraryDependencies ++= Seq ( "org.scalatest" %% "scalatest" % "2.1.4" % "test",
+libraryDependencies ++= Seq ( "org.scalatest" %% "scalatest" % "2.2.4" % "test",
                               "org.scalacheck" %% "scalacheck" % "1.12.2" % "test")
 /// Scalariform
 
