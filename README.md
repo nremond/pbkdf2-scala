@@ -45,13 +45,15 @@ object PBKDF2 {
 }
 ```
 
-Alternatively, you can use the following class that will handle the salting for you:
+Alternatively, you can use the following functions that will handle the salting for you:
 
 ```scala
-case class SecureHash(iterations: Int = 20000, 
-                      dkLength: Int = 32, 
-                      cryptoAlgo: String = "HmacSHA256") {
-  def createHash(password: String): String
+object SecureHash {
+  def createHash(password: String,
+                 iterations: Int = 20000,
+                 dkLength: Int = 32,
+                 cryptoAlgo: String = "HmacSHA256"): String
+
   def validatePassword(password: String, hashedPassword: String): Boolean
 }
 ```
