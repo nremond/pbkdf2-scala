@@ -23,34 +23,17 @@ import org.scalatest._
 
 class SecureHashSpec extends FlatSpec with Matchers with Inspectors {
 
-  import SecureHash.internals._
+  "SecureHash.internals" should "encode the output properly" in {
+    import SecureHash.internals._
 
-  val passwords = Vector("password", ":-( or :-)", "2¢", """H"qvVL5.y629_BA;1%:f/[OGo/B]x*UR2X:OUO3C/UKus$q.%$q@xmkJk&<_k+|
-""")
-
-  it should "be able to hash passwords and verify them" in {
-    val hashedPasswords = passwords.map(SecureHash.createHash(_))
-
-    forAll(passwords.zip(hashedPasswords)) {
-      case (pwd: String, hashedPwd: String) =>
-        SecureHash.validatePassword(pwd, hashedPwd) should be(true)
-    }
-  }
-
-  it should "only validate correct password" in {
-    val password = "secret_password"
-    val incorrectHash = "dead:beef"
-    SecureHash.validatePassword(password, incorrectHash) should be(false)
-  }
-
-  it should "encode the output" in {
     val salt = ByteBuffer.allocate(3).put(0.toByte).array()
     val out = encode(salt, salt, 22000, "Alg1")
 
     out should be("$p0$000055f0Alg1$AAAA$AAAA")
   }
 
-  it should "decode the input" in {
+  it should "decode the input properly" in {
+    import SecureHash.internals._
 
     val Some(Decoded(version, iterations, algo, salt, hash)) = decode("$p0$000055f0Alg1$AAAA$AAAAAAAA")
 
@@ -62,7 +45,12 @@ class SecureHashSpec extends FlatSpec with Matchers with Inspectors {
     hash should be(Array[Byte](zero, zero, zero, zero, zero, zero))
   }
 
+  val passwords = Vector("password", ":-( or :-)", "2¢", """H"qvVL5.y629_BA;1%:f/[OGo/B]x*UR2X:OUO3C/UKus$q.%$q@xmkJk&<_k+|
+""")
+
   it should "roundtrip " in {
+    import SecureHash.internals._
+
       def getBytes(i: Int) = {
         val b = new Array[Byte](i)
         new SecureRandom().nextBytes(b)
@@ -76,7 +64,21 @@ class SecureHashSpec extends FlatSpec with Matchers with Inspectors {
     decoded.key should be(hash)
     decoded.iterations should be(100)
     decoded.algo should be("test")
+  }
 
+  "SecureHash" should "be able to hash passwords and verify them" in {
+    val hashedPasswords = passwords.map(SecureHash.createHash(_))
+
+    forAll(passwords.zip(hashedPasswords)) {
+      case (pwd: String, hashedPwd: String) =>
+        SecureHash.validatePassword(pwd, hashedPwd) should be(true)
+    }
+  }
+
+  it should "only validate correct password" in {
+    val password = "secret_password"
+    val incorrectHash = "dead:beef"
+    SecureHash.validatePassword(password, incorrectHash) should be(false)
   }
 
 }
