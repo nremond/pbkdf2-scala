@@ -79,22 +79,26 @@ object SecureHash {
 
   private[nremond] object internals {
     def encode(salt: Array[Byte], key: Array[Byte], iterations: Int, algo: String): String = {
-      val iters = toHex(ByteBuffer.allocate(4).putInt(iterations).array())
-      s"$$p0$$$iters$algo$$${b64Encoder(salt)}$$${b64Encoder(key)}"
+      val iters = iterations.toString
+      // use hash name compatible with PassLib (https://pythonhosted.org/passlib/index.html)
+      val compAlgo = javaAlgoToPassLibAlgo.getOrElse(algo, algo)
+      s"$$pbkdf2-$compAlgo$$$iters$$${b64Encoder(salt)}$$${b64Encoder(key)}"
     }
 
     case class Decoded(version: String, iterations: Int, algo: String, salt: Array[Byte], key: Array[Byte])
 
     def decode(s: String): Option[Decoded] = Try {
       s match {
-        case rx(i, a, s, h) => Some(Decoded("p0", ByteBuffer.wrap(fromHex(i)).getInt, a, b64Decoder(s), b64Decoder(h)))
+        case rx(a, i, s, h) => Some(Decoded("pbkdf2", i.toInt, passLibAlgoToJava.getOrElse(a, a), b64Decoder(s), b64Decoder(h)))
         case _              => None
       }
-
     }.toOption.flatten
 
-    val rx = "\\$p0\\$(\\p{XDigit}{8})([^\\$]+)\\$([^\\$]*)\\$([^\\$]*)".r
-    def b64Decoder = Base64.getDecoder.decode(_: String)
-    val b64Encoder = Base64.getEncoder.encodeToString _
+    val rx = "\\$pbkdf2-([^\\$]+)\\$(\\d+)\\$([^\\$]*)\\$([^\\$]*)".r
+    def b64Decoder(s: String) = Base64.getDecoder.decode(s)
+    def b64Encoder(ba: Array[Byte]) = Base64.getEncoder.encodeToString(ba)
+    val javaAlgoToPassLibAlgo = Map("HmacSHA1" -> "sha1", "HmacSHA256" -> "sha256", "HmacSHA512" -> "sha512")
+    val passLibAlgoToJava = javaAlgoToPassLibAlgo.map(_.swap)
+
   }
 }
