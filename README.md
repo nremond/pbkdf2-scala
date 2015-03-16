@@ -1,4 +1,4 @@
-# PBKDF2 #
+# PBKDF2 [![Build Status](https://travis-ci.org/nremond/pbkdf2-scala.svg?branch=master)](https://travis-ci.org/nremond/pbkdf2-scala)
 
 *pbkdf2-scala* is an implementation of [PBKDF2] in Scala. It is cross-compiled for Scala 2.10 and 2.11.
 
@@ -11,7 +11,7 @@ libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.4"
 
 
 
-## Standards Conformance ##
+## Standards Conformance
 
 This implementation conforms to [RFC 2898][RFC-2898], and has been tested using the
 test vectors in Appendix B of [RFC 3962][RFC-3962]. Note, however, that while
@@ -21,7 +21,7 @@ a longer bit length and in addition, NIST has [stated][NIST] that SHA-1 should b
 due to concerns over recent cryptanalytic attacks.
 
 
-## Setting the number of iterations ##
+## Setting the number of iterations
 
 Choosing the correct value for this parameter is thus a trade-off: it
 should be set as high as possible, to make attacks as difficult as possible,
@@ -31,7 +31,7 @@ on how to consider that choice.
 
 The current default value is set to 20k. 
 
-## Using the library ##
+## Using the library
 
 You can use the raw PBKDF2 function which as the following signature:
 
@@ -58,7 +58,7 @@ object SecureHash {
 }
 ```
 
-## License ##
+## License
 
 See the `license.txt` file for the terms under which it may be used and distributed.
 
