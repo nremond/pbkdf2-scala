@@ -91,10 +91,10 @@ object SecureHash {
         case _              => None
       }
 
-    }.toOption.getOrElse(None)
+    }.toOption.flatten
 
-    val rx = "\\$p0\\$([0-9a-fA-F]{8})([^\\$]+)\\$([^\\$]*)\\$([^\\$]*)".r
-    val b64Decoder = Base64.getDecoder.decode(_: String)
+    val rx = "\\$p0\\$(\\p{XDigit}{8})([^\\$]+)\\$([^\\$]*)\\$([^\\$]*)".r
+    def b64Decoder = Base64.getDecoder.decode(_: String)
     val b64Encoder = Base64.getEncoder.encodeToString _
   }
 }
