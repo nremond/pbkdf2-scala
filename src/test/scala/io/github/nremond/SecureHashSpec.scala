@@ -27,19 +27,24 @@ class SecureHashSpec extends FlatSpec with Matchers with Inspectors {
     import SecureHash.internals._
 
     val salt = ByteBuffer.allocate(3).put(0.toByte).array()
-    val out = encode(salt, salt, 22000, "Alg1")
+    val res = List(
+      encode(salt, salt, 22000, "Alg1") -> "$pbkdf2-Alg1$22000$AAAA$AAAA",
+      encode(salt, salt, 22000, "HmacSHA1") -> "$pbkdf2-sha1$22000$AAAA$AAAA",
+      encode(salt, salt, 22000, "HmacSHA256") -> "$pbkdf2-sha256$22000$AAAA$AAAA",
+      encode(salt, salt, 22000, "HmacSHA512") -> "$pbkdf2-sha512$22000$AAAA$AAAA")
+    forAll(res) {
+      x => x._1 should be(x._2)
+    }
 
-    out should be("$p0$000055f0Alg1$AAAA$AAAA")
   }
 
   it should "decode the input properly" in {
     import SecureHash.internals._
+    val Some(Decoded(version, iterations, algo, salt, hash)) = decode("$pbkdf2-sha512$2222$AAAA$AAAAAAAA")
 
-    val Some(Decoded(version, iterations, algo, salt, hash)) = decode("$p0$000055f0Alg1$AAAA$AAAAAAAA")
-
-    version should be("p0")
-    algo should be("Alg1")
-    iterations should be(22000)
+    version should be("pbkdf2")
+    algo should be("HmacSHA512")
+    iterations should be(2222)
     val zero = 0.toByte
     salt should be(Array[Byte](zero, zero, zero))
     hash should be(Array[Byte](zero, zero, zero, zero, zero, zero))

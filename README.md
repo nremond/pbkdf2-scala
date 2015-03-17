@@ -58,6 +58,14 @@ object SecureHash {
 }
 ```
 
+validatePassword and createHash output are compatible with [PassLib](https://pythonhosted.org/passlib/lib/passlib.hash.pbkdf2_digest.html)
+for the supported hash (HmacSHA1, HmacSHA256, HmacSHA512).
+
+
+## Migration
+
+User of older version of this library can find the previous API [here](src/main/scala/io/github/nremond/legacy/SecureHash.scala)
+
 ## License
 
 See the `license.txt` file for the terms under which it may be used and distributed.
