@@ -23,6 +23,13 @@ import scala.io.Codec.UTF8
 
 object PBKDF2 {
 
+  private[this] def bytesFromInt(i: Int) = ByteBuffer.allocate(4).putInt(i).array
+
+  private[this] def xor(buff: IntBuffer, a2: Array[Byte]) {
+    val b2 = ByteBuffer.wrap(a2).asIntBuffer
+    buff.array.indices.foreach(i => buff.put(i, buff.get(i) ^ b2.get(i)))
+  }
+
   /**
    * Implements PBKDF2 as defined in RFC 2898, section 5.2
    *
@@ -43,18 +50,11 @@ object PBKDF2 {
     val mac = crypto.Mac.getInstance(cryptoAlgo)
     mac.init(new crypto.spec.SecretKeySpec(password, "RAW"))
 
-      def bytesFromInt(i: Int) = ByteBuffer.allocate(4).putInt(i).array
-
-      def xor(buff: IntBuffer, a2: Array[Byte]) {
-        val b2 = ByteBuffer.wrap(a2).asIntBuffer
-        buff.array.indices.foreach(i => buff.put(i, buff.get(i) ^ b2.get(i)))
-      }
-
       // pseudo-random function defined in the spec
-      def prf(buff: Array[Byte]) = mac.doFinal(buff)
+      private[this] def prf(buff: Array[Byte]) = mac.doFinal(buff)
 
       // this is a translation of the helper function "F" defined in the spec
-      def calculateBlock(blockNum: Int): Array[Byte] = {
+      private[this] def calculateBlock(blockNum: Int): Array[Byte] = {
         // u_1
         val u_1 = prf(salt ++ bytesFromInt(blockNum))
 
