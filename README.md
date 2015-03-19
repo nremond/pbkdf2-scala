@@ -58,7 +58,7 @@ object SecureHash {
 }
 ```
 
-validatePassword and createHash output are compatible with [PassLib][PASS_LIB] for the supported hash (HmacSHA1, HmacSHA256, HmacSHA512).
+validatePassword and createHash output are compatible with [PassLib][PASS_LIB] for the supported pseudo-random-functions (HmacSHA1, HmacSHA256, HmacSHA512).
 
 
 ## Release Notes

@@ -19,8 +19,6 @@ package io.github.nremond
 import java.nio.{ ByteBuffer, IntBuffer }
 import javax.crypto
 
-import scala.io.Codec.UTF8
-
 object PBKDF2 {
 
   private[this] def bytesFromInt(i: Int) = ByteBuffer.allocate(4).putInt(i).array
@@ -51,10 +49,10 @@ object PBKDF2 {
     mac.init(new crypto.spec.SecretKeySpec(password, "RAW"))
 
       // pseudo-random function defined in the spec
-      private[this] def prf(buff: Array[Byte]) = mac.doFinal(buff)
+      def prf(buff: Array[Byte]) = mac.doFinal(buff)
 
       // this is a translation of the helper function "F" defined in the spec
-      private[this] def calculateBlock(blockNum: Int): Array[Byte] = {
+      def calculateBlock(blockNum: Int): Array[Byte] = {
         // u_1
         val u_1 = prf(salt ++ bytesFromInt(blockNum))
 
