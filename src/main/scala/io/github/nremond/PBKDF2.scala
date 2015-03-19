@@ -25,7 +25,14 @@ object PBKDF2 {
 
   private[this] def xor(buff: IntBuffer, a2: Array[Byte]) {
     val b2 = ByteBuffer.wrap(a2).asIntBuffer
-    buff.array.indices.foreach(i => buff.put(i, buff.get(i) ^ b2.get(i)))
+
+    // Avoid using buff.array.indices.foreach() for perf reason (virtual function calls and boxing)
+    val len = buff.array.size
+    var i = 0
+    while (i < len) {
+      buff.put(i, buff.get(i) ^ b2.get(i))
+      i += 1
+    }
   }
 
   /**
