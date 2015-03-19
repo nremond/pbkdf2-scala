@@ -58,13 +58,18 @@ object SecureHash {
 }
 ```
 
-validatePassword and createHash output are compatible with [PassLib](https://pythonhosted.org/passlib/lib/passlib.hash.pbkdf2_digest.html)
-for the supported hash (HmacSHA1, HmacSHA256, HmacSHA512).
+validatePassword and createHash output are compatible with [PassLib][PASS_LIB] for the supported hash (HmacSHA1, HmacSHA256, HmacSHA512).
 
 
-## Migration
+## Release Notes
 
+* 0.4-SNAPSHOT:
+Breaking changes in `SecureHash` to implement a version of Modular Crypt Format (MCF) compatible with [PassLib][PASS_LIB].
 User of older version of this library can find the previous API [here](src/main/scala/io/github/nremond/legacy/SecureHash.scala)
+* 0.3:
+Introduce the `SecureHash` class to handle the salting.
+* 0.2:
+Initial release
 
 ## License
 
@@ -81,3 +86,4 @@ See the `license.txt` file for the terms under which it may be used and distribu
 [HMAC]: http://tools.ietf.org/html/rfc2104 "RFC 2104"
 [ITERS]: http://tools.ietf.org/html/rfc3962#page-6 "RFC 3962: Section 8"
 [NIST]: http://csrc.nist.gov/groups/ST/hash/statement.html "NIST Comments on Cryptanalytic Attacks on SHA-1"
+[PASS_LIB]: https://pythonhosted.org/passlib/lib/passlib.hash.pbkdf2_digest.html "PassLib"
