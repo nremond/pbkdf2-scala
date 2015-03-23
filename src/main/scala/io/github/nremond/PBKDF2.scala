@@ -56,7 +56,7 @@ object PBKDF2 {
     mac.init(new crypto.spec.SecretKeySpec(password, "RAW"))
 
       // pseudo-random function defined in the spec
-      def prf(buff: Array[Byte]) = mac.doFinal(buff)
+     @inline def prf(buff: Array[Byte]) = mac.doFinal(buff)
 
       // this is a translation of the helper function "F" defined in the spec
       def calculateBlock(blockNum: Int): Array[Byte] = {
