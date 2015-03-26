@@ -9,8 +9,6 @@ For using it, you can add the following dependency in SBT.
 libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.4"
 ```
 
-
-
 ## Standards Conformance
 
 This implementation conforms to [RFC 2898][RFC-2898], and has been tested using the
@@ -41,7 +39,7 @@ object PBKDF2 {
             salt: Array[Byte], 
             iterations: Int = 20000, 
             dkLength: Int = 32, 
-            cryptoAlgo: String = "HmacSHA256"): Array[Byte]
+            cryptoAlgo: String = "HmacSHA512"): Array[Byte]
 }
 ```
 
@@ -52,24 +50,25 @@ object SecureHash {
   def createHash(password: String,
                  iterations: Int = 20000,
                  dkLength: Int = 32,
-                 cryptoAlgo: String = "HmacSHA256"): String
+                 cryptoAlgo: String = "HmacSHA512"): String
 
   def validatePassword(password: String, hashedPassword: String): Boolean
 }
 ```
 
-validatePassword and createHash output are compatible with [PassLib][PASS_LIB] for the supported pseudo-random-functions (HmacSHA1, HmacSHA256, HmacSHA512).
+validatePassword and createHash output are compatible with [PassLib][PASS_LIB] for the supported pseudo-random-functions (`HmacSHA1`, `HmacSHA256`, `HmacSHA512`).
 
 
 ## Release Notes
 
-* 0.4-SNAPSHOT:
+* 0.5-SNAPSHOT:
 Breaking changes in `SecureHash` to implement a version of Modular Crypt Format (MCF) compatible with [PassLib][PASS_LIB].
-User of older version of this library can find the previous API [here](src/main/scala/io/github/nremond/legacy/SecureHash.scala)
-* 0.3:
+User of older version of this library can find the previous API [here](src/main/scala/io/github/nremond/legacy/SecureHash.scala).
+Update the default security settings to `HmacSHA512`.
+* 0.4:
 Introduce the `SecureHash` class to handle the salting.
-* 0.2:
-Initial release
+* 0.3:
+Update the default security settings.
 
 ## License
 

@@ -16,11 +16,10 @@
 
 package io.github.nremond
 
-import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets.UTF_8
 import java.security.SecureRandom
 import java.util.Base64
 
-import scala.io.Codec.UTF8
 import scala.util.Try
 
 /**
@@ -54,13 +53,13 @@ object SecureHash {
    * @param dkLength derived-key length, default to 32
    * @param cryptoAlgo HMAC+SHA256 is the default as HMAC+SHA1 is now considered weak
    */
-  def createHash(password: String, iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA256"): String = {
+  def createHash(password: String, iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA512"): String = {
     val salt = {
       val b = new Array[Byte](24)
       (new SecureRandom).nextBytes(b)
       b
     }
-    val key = PBKDF2(password.getBytes(UTF8.charSet), salt, iterations, dkLength, cryptoAlgo)
+    val key = PBKDF2(password.getBytes(UTF_8), salt, iterations, dkLength, cryptoAlgo)
     encode(salt, key, iterations, cryptoAlgo)
   }
 
@@ -73,7 +72,7 @@ object SecureHash {
    */
   def validatePassword(password: String, hashedPassword: String): Boolean = decode(hashedPassword) match {
     case Some(decoded) =>
-      decoded.key.sameElements(PBKDF2(password.getBytes(UTF8.charSet), decoded.salt, decoded.iterations, decoded.key.length, decoded.algo))
+      decoded.key.sameElements(PBKDF2(password.getBytes(UTF_8), decoded.salt, decoded.iterations, decoded.key.length, decoded.algo))
     case _ => false
   }
 
@@ -99,6 +98,5 @@ object SecureHash {
     def b64Encoder(ba: Array[Byte]) = Base64.getEncoder.encodeToString(ba)
     val javaAlgoToPassLibAlgo = Map("HmacSHA1" -> "sha1", "HmacSHA256" -> "sha256", "HmacSHA512" -> "sha512")
     val passLibAlgoToJava = javaAlgoToPassLibAlgo.map(_.swap)
-
   }
 }
