@@ -23,14 +23,13 @@ object PBKDF2 {
 
   private[this] def bytesFromInt(i: Int) = ByteBuffer.allocate(4).putInt(i).array
 
-  private[this] def xor(buff: IntBuffer, a2: Array[Byte]) {
+  private[this] def xor(buff: Array[Int], a2: Array[Byte]) {
     val b2 = ByteBuffer.wrap(a2).asIntBuffer
 
-    // Avoid using buff.array.indices.foreach() for perf reason (virtual function calls and boxing)
     val len = buff.array.size
     var i = 0
     while (i < len) {
-      buff.put(i, buff.get(i) ^ b2.get(i))
+      buff(i) ^= b2.get(i)
       i += 1
     }
   }
@@ -56,14 +55,14 @@ object PBKDF2 {
     mac.init(new crypto.spec.SecretKeySpec(password, "RAW"))
 
       // pseudo-random function defined in the spec
-     @inline def prf(buff: Array[Byte]) = mac.doFinal(buff)
+      @inline def prf(buff: Array[Byte]) = mac.doFinal(buff)
 
       // this is a translation of the helper function "F" defined in the spec
       def calculateBlock(blockNum: Int): Array[Byte] = {
         // u_1
         val u_1 = prf(salt ++ bytesFromInt(blockNum))
 
-        val buff = IntBuffer.allocate(u_1.length / 4).put(ByteBuffer.wrap(u_1).asIntBuffer)
+        val buff = IntBuffer.allocate(u_1.length / 4).put(ByteBuffer.wrap(u_1).asIntBuffer).array.clone
         var u = u_1
         var iter = 1
         while (iter < iterations) {
@@ -74,7 +73,7 @@ object PBKDF2 {
         }
 
         val ret = ByteBuffer.allocate(u_1.length)
-        buff.array.foreach(ret.putInt)
+        ret.asIntBuffer.put(buff)
         ret.array
       }
 
