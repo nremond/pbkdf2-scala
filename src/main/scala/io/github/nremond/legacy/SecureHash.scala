@@ -16,10 +16,11 @@
 
 package io.github.nremond.legacy
 
-import scala.io.Codec.UTF8
+import java.nio.charset.StandardCharsets.UTF_8
+import java.security.SecureRandom
+
 import io.github.nremond._
 
-import java.security.SecureRandom
 
 /**
  *  This is the legacy API.
@@ -28,7 +29,7 @@ import java.security.SecureRandom
  * @param dkLength derived-key length, default to 32
  * @param cryptoAlgo HMAC+SHA256 is the default as HMAC+SHA1 is now considered weak
  */
-case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA256") {
+case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA512") {
 
   /**
    * Creates a hashed password using [[PBKDF2]]
@@ -52,7 +53,7 @@ case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: S
     val salt = new Array[Byte](24) //192 bits
     random.nextBytes(salt)
 
-    val hash = PBKDF2(password.getBytes(UTF8.charSet), salt, iterations, dkLength, cryptoAlgo)
+    val hash = PBKDF2(password.getBytes(UTF_8), salt, iterations, dkLength, cryptoAlgo)
 
     raw"${toHex(salt)}:${toHex(hash)}"
   }
@@ -75,11 +76,20 @@ case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: S
     else
       legacyValidatePassword(password, hashedPassword)
 
+  /**
+   * Tests two byte arrays for value equality avoiding timing attacks.
+   *
+   * @note This function leaks information about the length of each byte array as well as
+   *       whether the two byte arrays have the same length.
+   * @see [[http://codahale.com/a-lesson-in-timing-attacks/]]
+   * @see [[http://rdist.root.org/2009/05/28/timing-attack-in-google-keyczar-library/]]
+   * @see [[http://emerose.com/timing-attacks-explained]]
+   */
   private def legacyValidatePassword(password: String, hashedPassword: String): Boolean = {
     val params = hashedPassword.split(":")
     assert(params.size == 2)
     val salt = fromHex(params(0))
-    val hash = PBKDF2(password.getBytes(UTF8.charSet), salt, iterations, dkLength, cryptoAlgo)
+    val hash = PBKDF2(password.getBytes(UTF_8), salt, iterations, dkLength, cryptoAlgo)
     params(1) == toHex(hash)
   }
 }
