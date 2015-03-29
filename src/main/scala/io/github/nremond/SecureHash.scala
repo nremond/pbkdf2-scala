@@ -51,7 +51,7 @@ object SecureHash {
    * @param password  the password to hash
    * @param iterations the number of encryption iterations. Default to 20000
    * @param dkLength derived-key length, default to 32
-   * @param cryptoAlgo HMAC+SHA256 is the default as HMAC+SHA1 is now considered weak
+   * @param cryptoAlgo HMAC+SHA512 is the default as HMAC+SHA1 is now considered weak
    */
   def createHash(password: String, iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA512"): String = {
     val salt = {
@@ -64,6 +64,16 @@ object SecureHash {
   }
 
   /**
+   * Tests two byte arrays for value equality in constant time.
+   *
+   * @note This function leaks information about the length of each byte array as well as
+   *       whether the two byte arrays have the same length.
+   * @see [[http://codahale.com/a-lesson-in-timing-attacks]]
+   */
+  private[this] def secure_==(a1: Array[Byte], a2: Array[Byte]): Boolean =
+    a1.length == a2.length && a1.zip(a2).foldLeft(0) { case (r, (x1, x2)) => r | x1 ^ x2 } == 0
+
+  /**
    * Validate a password against a password hash
    *
    * @param password the password to validate
@@ -71,8 +81,9 @@ object SecureHash {
    * @return true is the password is valid
    */
   def validatePassword(password: String, hashedPassword: String): Boolean = decode(hashedPassword) match {
-    case Some(decoded) =>
-      decoded.key.sameElements(PBKDF2(password.getBytes(UTF_8), decoded.salt, decoded.iterations, decoded.key.length, decoded.algo))
+    case Some(Decoded(_, iterations, algo, salt, key)) =>
+      val hash = PBKDF2(password.getBytes(UTF_8), salt, iterations, key.length, algo)
+      secure_==(key, hash)
     case _ => false
   }
 

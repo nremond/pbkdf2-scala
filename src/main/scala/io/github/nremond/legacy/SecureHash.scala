@@ -21,6 +21,7 @@ import java.security.SecureRandom
 
 import io.github.nremond._
 
+import scala.annotation.tailrec
 
 /**
  *  This is the legacy API.
@@ -76,20 +77,11 @@ case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: S
     else
       legacyValidatePassword(password, hashedPassword)
 
-  /**
-   * Tests two byte arrays for value equality avoiding timing attacks.
-   *
-   * @note This function leaks information about the length of each byte array as well as
-   *       whether the two byte arrays have the same length.
-   * @see [[http://codahale.com/a-lesson-in-timing-attacks/]]
-   * @see [[http://rdist.root.org/2009/05/28/timing-attack-in-google-keyczar-library/]]
-   * @see [[http://emerose.com/timing-attacks-explained]]
-   */
-  private def legacyValidatePassword(password: String, hashedPassword: String): Boolean = {
+  private[this] def legacyValidatePassword(password: String, hashedPassword: String): Boolean = {
     val params = hashedPassword.split(":")
     assert(params.size == 2)
     val salt = fromHex(params(0))
     val hash = PBKDF2(password.getBytes(UTF_8), salt, iterations, dkLength, cryptoAlgo)
-    params(1) == toHex(hash)
+    fromHex(params(1)) == hash
   }
 }
