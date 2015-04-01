@@ -104,10 +104,10 @@ object SecureHash {
       }
     }.toOption.flatten
 
-    val rx = "\\$pbkdf2-([^\\$]+)\\$(\\d+)\\$([^\\$]*)\\$([^\\$]*)".r
-    def b64Decoder(s: String) = Base64.getDecoder.decode(s)
-    def b64Encoder(ba: Array[Byte]) = Base64.getEncoder.encodeToString(ba)
-    val javaAlgoToPassLibAlgo = Map("HmacSHA1" -> "sha1", "HmacSHA256" -> "sha256", "HmacSHA512" -> "sha512")
-    val passLibAlgoToJava = javaAlgoToPassLibAlgo.map(_.swap)
+    private[nremond] val javaAlgoToPassLibAlgo = Map("HmacSHA1" -> "sha1", "HmacSHA256" -> "sha256", "HmacSHA512" -> "sha512")
+    private[nremond] val passLibAlgoToJava = javaAlgoToPassLibAlgo.map(_.swap)
+    private[this] val rx = "\\$pbkdf2-([^\\$]+)\\$(\\d+)\\$([^\\$]*)\\$([^\\$]*)".r
+    private[this] def b64Decoder(s: String) = Base64.getDecoder.decode(s)
+    private[this] def b64Encoder(ba: Array[Byte]) = Base64.getEncoder.encodeToString(ba)
   }
 }

@@ -35,7 +35,6 @@ class SecureHashSpec extends FlatSpec with Matchers with Inspectors {
     forAll(res) {
       x => x._1 should be(x._2)
     }
-
   }
 
   it should "decode the input properly" in {
@@ -50,8 +49,7 @@ class SecureHashSpec extends FlatSpec with Matchers with Inspectors {
     hash should be(Array[Byte](zero, zero, zero, zero, zero, zero))
   }
 
-  val passwords = Vector("password", ":-( or :-)", "2¢", """H"qvVL5.y629_BA;1%:f/[OGo/B]x*UR2X:OUO3C/UKus$q.%$q@xmkJk&<_k+|
-""")
+  val passwords = Vector("password", ":-( or :-)", "2¢", """H"qvVL5.y629_BA;1%:f/[OGo/B]x*UR2X:OUO3C/UKus$q.%$q@xmkJk&<_k+|""")
 
   it should "roundtrip " in {
     import SecureHash.internals._
@@ -61,6 +59,7 @@ class SecureHashSpec extends FlatSpec with Matchers with Inspectors {
         new SecureRandom().nextBytes(b)
         b
       }
+
     val salt = getBytes(32)
     val hash = getBytes(64)
     val output = encode(salt, hash, 100, "test")
