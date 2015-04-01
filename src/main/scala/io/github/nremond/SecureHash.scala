@@ -46,7 +46,7 @@ object SecureHash {
    *
    * Example :
    *
-   * p0\$00004e20HmacSHA256\$mOCtN/Scjry0uIALe4bCCrL9eL8aWEA/\$hDxtqCnBF1MS5qIOxHeDAZ23QEmqdL7796I0pVJ2yvQ=
+   * p0\$00004e20HmacSHA256\$mOCtN/Scjry0uIALe4bCCrL9eL8aWEA/\$hDxtqCnBF1MS5qIOxHeDAZ23QEmqdL7796I0pVJ2yvQ
    *
    * @param password  the password to hash
    * @param iterations the number of encryption iterations. Default to 20000
@@ -107,7 +107,9 @@ object SecureHash {
     private[nremond] val javaAlgoToPassLibAlgo = Map("HmacSHA1" -> "sha1", "HmacSHA256" -> "sha256", "HmacSHA512" -> "sha512")
     private[nremond] val passLibAlgoToJava = javaAlgoToPassLibAlgo.map(_.swap)
     private[this] val rx = "\\$pbkdf2-([^\\$]+)\\$(\\d+)\\$([^\\$]*)\\$([^\\$]*)".r
-    private[this] def b64Decoder(s: String) = Base64.getDecoder.decode(s)
-    private[this] def b64Encoder(ba: Array[Byte]) = Base64.getEncoder.encodeToString(ba)
+    private[this] def b64Decoder(s: String) =
+      Base64.getDecoder.decode(s.replace(".", "+"))
+    private[this] def b64Encoder(ba: Array[Byte]) =
+      Base64.getEncoder.withoutPadding.encodeToString(ba).replace("+", ".")
   }
 }

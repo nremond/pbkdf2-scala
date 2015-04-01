@@ -85,4 +85,14 @@ class SecureHashSpec extends FlatSpec with Matchers with Inspectors {
     SecureHash.validatePassword(password, incorrectHash) should be(false)
   }
 
+  it should "be compatible with Passlib" in {
+    // Exemples from: https://pythonhosted.org/passlib/lib/passlib.hash.pbkdf2_digest.html
+    val hashs = Vector("$pbkdf2-sha256$6400$0ZrzXitFSGltTQnBWOsdAw$Y11AchqV4b0sUisdZd0Xr97KWoymNE0LNNrnEgY4H9M",
+      "$pbkdf2-sha256$6400$.6UI/S.nXIk8jcbdHx3Fhg$98jZicV16ODfEsEZeYPGHU3kbrUrvUEXOPimVSQDD44")
+    hashs.foreach { hash =>
+      SecureHash.validatePassword("password", hash) should be(true)
+      SecureHash.validatePassword("wrong", hash) should be(false)
+    }
+  }
+
 }
