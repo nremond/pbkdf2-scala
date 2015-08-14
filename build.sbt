@@ -6,20 +6,18 @@ organization := "io.github.nremond"
 
 version := "0.6-SNAPSHOT"
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.7"
 
-crossScalaVersions := Seq("2.11.6", "2.10.5")
+crossScalaVersions := Seq("2.11.7", "2.10.5")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
+libraryDependencies ++= Seq(
+  "org.scalatest"   %% "scalatest"  % "2.2.5"   % Test,
+  "org.scalacheck"  %% "scalacheck" % "1.12.4"  % Test
+)
 
-/// ScalaTest
-resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
-
-libraryDependencies ++= Seq ( "org.scalatest" %% "scalatest" % "2.2.4" % "test",
-                              "org.scalacheck" %% "scalacheck" % "1.12.2" % "test")
 /// Scalariform
-
 scalariformSettings
 
 ScalariformKeys.preferences := ScalariformKeys.preferences.value
@@ -28,23 +26,8 @@ ScalariformKeys.preferences := ScalariformKeys.preferences.value
       .setPreference(AlignSingleLineCaseStatements, true)
       .setPreference(IndentLocalDefs, true)
 
-
 /// Publishing
-publishTo <<= version { v: String =>
-  val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT"))
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
-
-publishMavenStyle := true
-
-publishArtifact in Test := false
-
-pomIncludeRepository := { _ => false }
-
-pomExtra := (
+pomExtra in Global :=
   <url>http://github.com/nremond/pbkdf2-scala</url>
   <licenses>
     <license>
@@ -64,4 +47,3 @@ pomExtra := (
       <url>http://nremond.github.io</url>
     </developer>
   </developers>
-)
