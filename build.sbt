@@ -8,14 +8,16 @@ version := "0.6-SNAPSHOT"
 
 scalaVersion := "2.11.7"
 
-crossScalaVersions := Seq("2.11.7", "2.10.5")
+crossScalaVersions := Seq("2.11.7", "2.10.6")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 libraryDependencies ++= Seq(
-  "org.scalatest"   %% "scalatest"  % "2.2.5"   % Test,
-  "org.scalacheck"  %% "scalacheck" % "1.12.4"  % Test
+  "org.scalatest"   %% "scalatest"  % "2.2.6"   % Test,
+  "org.scalacheck"  %% "scalacheck" % "1.12.5"  % Test
 )
+
+resolvers += "Sonatype OSS Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 
 /// Scalariform
 scalariformSettings

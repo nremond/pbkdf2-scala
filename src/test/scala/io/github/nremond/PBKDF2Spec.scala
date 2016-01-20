@@ -42,10 +42,10 @@ class PBKDF2Spec extends FlatSpec with Matchers {
     pbkdf2("password", "salt", 4096, 20, "HmacSHA1") should equal("4b007901b765489abead49d926f721d065a429c1")
   }
 
-  // It takes too long, I'm commenting it. 
-  //  it should " "work with the 3rd test vector"" in {
-  //    sha1Pbkdf2.encrypt("password", "salt", 16777216, 20) should equal("eefe3d61cd4da4e4e9945b3d6ba2158c2634e984")
-  //  }
+  // It takes too long, I'm ignoring it.
+  ignore should "work with the 3rd test vector" in {
+    pbkdf2("password", "salt", 16777216, 20, "HmacSHA1") should equal("eefe3d61cd4da4e4e9945b3d6ba2158c2634e984")
+  }
 
   it should "work with the 4th test vector" in {
     pbkdf2("passwordPASSWORDpassword", "saltSALTsaltSALTsaltSALTsaltSALTsalt", 4096, 25, "HmacSHA1") should equal("3d2eec4fe41c849b80c8d83662c0e44a8b291a964cf2f07038")
