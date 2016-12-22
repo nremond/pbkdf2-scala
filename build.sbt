@@ -6,15 +6,15 @@ organization := "io.github.nremond"
 
 version := "0.6-SNAPSHOT"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.1"
 
-crossScalaVersions := Seq("2.11.8", "2.10.6")
+crossScalaVersions := Seq("2.12.1", "2.11.8", "2.10.6")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 libraryDependencies ++= Seq(
-  "org.scalatest"   %% "scalatest"  % "2.2.6"   % Test,
-  "org.scalacheck"  %% "scalacheck" % "1.12.5"  % Test
+  "org.scalatest"   %% "scalatest"  % "3.0.1"   % Test,
+  "org.scalacheck"  %% "scalacheck" % "1.13.4"  % Test
 )
 
 resolvers += "Sonatype OSS Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
