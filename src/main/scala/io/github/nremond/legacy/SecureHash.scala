@@ -28,7 +28,7 @@ import scala.annotation.tailrec
  *
  * @param iterations the number of encryption iterations. Default to 20000
  * @param dkLength derived-key length, default to 32
- * @param cryptoAlgo HMAC+SHA256 is the default as HMAC+SHA1 is now considered weak
+ * @param cryptoAlgo HMAC+SHA512 is the default as HMAC+SHA1 is now considered weak
  */
 case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA512") {
 
@@ -82,6 +82,6 @@ case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: S
     assert(params.size == 2)
     val salt = fromHex(params(0))
     val hash = PBKDF2(password.getBytes(UTF_8), salt, iterations, dkLength, cryptoAlgo)
-    fromHex(params(1)) == hash
+    java.util.Arrays.equals(fromHex(params(1)), hash)
   }
 }
