@@ -6,7 +6,7 @@
 For using it, you can add the following dependency in SBT.
 
 ```Scala
-libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.5"
+libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.6.2"
 ```
 
 ## Standards Conformance
@@ -61,7 +61,8 @@ validatePassword and createHash output are compatible with [PassLib][PASS_LIB] f
 
 ## Release Notes
 
-* 0.6-SNAPSHOT:
+* 0.6:
+Scala 2.12 support
 * 0.5:
 Breaking changes in `SecureHash` to implement a version of Modular Crypt Format (MCF) compatible with [PassLib][PASS_LIB].
 User of older version of this library can find the previous API [here](src/main/scala/io/github/nremond/legacy/SecureHash.scala).
