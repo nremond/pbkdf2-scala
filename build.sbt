@@ -4,8 +4,6 @@ name := "pbkdf2-scala"
 
 organization := "io.github.nremond"
 
-version := "0.7-SNAPSHOT"
-
 scalaVersion := "2.12.3"
 
 crossScalaVersions := Seq("2.12.3", "2.11.11", "2.10.6")
@@ -49,3 +47,22 @@ pomExtra in Global :=
       <url>http://nremond.github.io</url>
     </developer>
   </developers>
+
+
+
+import ReleaseTransformations._
+
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  ReleaseStep(action = Command.process("publishSigned", _), enableCrossBuild = true),
+  setNextVersion,
+  commitNextVersion,
+  ReleaseStep(action = Command.process("sonatypeReleaseAll", _), enableCrossBuild = true),
+  pushChanges
+)
