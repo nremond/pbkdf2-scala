@@ -18,6 +18,7 @@ package io.github.nremond.legacy
 
 import java.nio.charset.StandardCharsets.UTF_8
 import java.security.SecureRandom
+import java.util.Arrays
 
 import io.github.nremond._
 
@@ -30,6 +31,7 @@ import scala.annotation.tailrec
  * @param dkLength derived-key length, default to 32
  * @param cryptoAlgo HMAC+SHA512 is the default as HMAC+SHA1 is now considered weak
  */
+@Deprecated
 case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA512") {
 
   /**
@@ -49,6 +51,7 @@ case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: S
    *
    * @param password the password to hash
    */
+  @Deprecated
   def createHash(password: String): String = {
     val random = new SecureRandom
     val salt = new Array[Byte](24) //192 bits
@@ -70,6 +73,7 @@ case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: S
    * @param hashedPassword the password hash.
    * @return true is the password is valid
    */
+  @Deprecated
   def validatePassword(password: String, hashedPassword: String): Boolean =
     //Try new format first and then fall back to legacy
     if (io.github.nremond.SecureHash.validatePassword(password, hashedPassword))
@@ -82,6 +86,6 @@ case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: S
     assert(params.size == 2)
     val salt = fromHex(params(0))
     val hash = PBKDF2(password.getBytes(UTF_8), salt, iterations, dkLength, cryptoAlgo)
-    java.util.Arrays.equals(fromHex(params(1)), hash)
+    Arrays.equals(fromHex(params(1)), hash)
   }
 }
