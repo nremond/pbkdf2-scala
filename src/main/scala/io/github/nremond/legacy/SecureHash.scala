@@ -83,9 +83,11 @@ case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: S
 
   private[this] def legacyValidatePassword(password: String, hashedPassword: String): Boolean = {
     val params = hashedPassword.split(":")
-    assert(params.size == 2)
-    val salt = fromHex(params(0))
-    val hash = PBKDF2(password.getBytes(UTF_8), salt, iterations, dkLength, cryptoAlgo)
-    Arrays.equals(fromHex(params(1)), hash)
+    if (params.size == 2) {
+      val salt = fromHex(params(0))
+      val hash = PBKDF2(password.getBytes(UTF_8), salt, iterations, dkLength, cryptoAlgo)
+      Arrays.equals(fromHex(params(1)), hash)
+    } else
+      false
   }
 }
