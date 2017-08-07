@@ -6,7 +6,7 @@
 For using it, you can add the following dependency in SBT.
 
 ```Scala
-libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.6.2"
+libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.6.3"
 ```
 
 ## Standards Conformance
