@@ -31,7 +31,6 @@ import scala.annotation.tailrec
  * @param dkLength derived-key length, default to 32
  * @param cryptoAlgo HMAC+SHA512 is the default as HMAC+SHA1 is now considered weak
  */
-@Deprecated
 case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA512") {
 
   /**
@@ -51,7 +50,7 @@ case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: S
    *
    * @param password the password to hash
    */
-  @Deprecated
+  @deprecated("Only create password via io.github.nremond.SecureHash", "pbkdf2-scala 0.5")
   def createHash(password: String): String = {
     val random = new SecureRandom
     val salt = new Array[Byte](24) //192 bits
@@ -73,7 +72,6 @@ case class SecureHash(iterations: Int = 20000, dkLength: Int = 32, cryptoAlgo: S
    * @param hashedPassword the password hash.
    * @return true is the password is valid
    */
-  @Deprecated
   def validatePassword(password: String, hashedPassword: String): Boolean =
     //Try new format first and then fall back to legacy
     if (io.github.nremond.SecureHash.validatePassword(password, hashedPassword))
