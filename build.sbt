@@ -1,3 +1,4 @@
+import com.typesafe.sbt.SbtScalariform.ScalariformKeys
 import scalariform.formatter.preferences._
 
 name := "pbkdf2-scala"
@@ -18,10 +19,10 @@ libraryDependencies ++= Seq(
 resolvers += "Sonatype OSS Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 
 /// Scalariform
-scalariformSettings
+scalariformAutoformat := true
 
-ScalariformKeys.preferences := ScalariformKeys.preferences.value
-      .setPreference(DoubleIndentClassDeclaration, true)
+scalariformPreferences := ScalariformKeys.preferences.value
+      .setPreference(DoubleIndentConstructorArguments, true)
       .setPreference(AlignParameters, true)
       .setPreference(AlignSingleLineCaseStatements, true)
       .setPreference(IndentLocalDefs, true)
@@ -60,9 +61,9 @@ releaseProcess := Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
-  ReleaseStep(action = Command.process("publishSigned", _), enableCrossBuild = true),
+  ReleaseStep(releaseStepCommand("publishSigned"), enableCrossBuild = true),
   setNextVersion,
   commitNextVersion,
-  ReleaseStep(action = Command.process("sonatypeReleaseAll", _), enableCrossBuild = true),
+  ReleaseStep(releaseStepCommand("sonatypeReleaseAll"), enableCrossBuild = true),
   pushChanges
 )
