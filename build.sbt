@@ -12,8 +12,8 @@ crossScalaVersions := Seq("2.12.10", "2.11.12", "2.10.6")
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 libraryDependencies ++= Seq(
-  "org.scalatest"   %% "scalatest"  % "3.0.1"   % Test,
-  "org.scalacheck"  %% "scalacheck" % "1.13.4"  % Test
+  "org.scalatest"   %% "scalatest"  % "3.0.8"   % Test,
+  "org.scalacheck"  %% "scalacheck" % "1.14.1"  % Test
 )
 
 resolvers += "Sonatype OSS Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
