@@ -5,9 +5,9 @@ name := "pbkdf2-scala"
 
 organization := "io.github.nremond"
 
-scalaVersion := "2.12.3"
+scalaVersion := "2.12.10"
 
-crossScalaVersions := Seq("2.12.3", "2.11.11", "2.10.6")
+crossScalaVersions := Seq("2.12.10", "2.11.12", "2.10.6")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
