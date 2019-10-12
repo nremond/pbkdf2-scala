@@ -7,7 +7,7 @@ organization := "io.github.nremond"
 
 scalaVersion := "2.13.1"
 
-crossScalaVersions := Seq("2.13.1", "2.12.10", "2.11.12", "2.10.6")
+crossScalaVersions := Seq("2.13.1", "2.12.10", "2.11.12")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
