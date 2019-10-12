@@ -23,7 +23,7 @@ object PBKDF2 {
 
   private[this] def bytesFromInt(i: Int) = ByteBuffer.allocate(4).putInt(i).array
 
-  private[this] def xor(buff: Array[Int], a2: Array[Byte]): Unit = {
+  private[this] def xorInPlace(buff: Array[Int], a2: Array[Byte]): Unit = {
     val b2 = ByteBuffer.wrap(a2).asIntBuffer
 
     val len = buff.array.size
@@ -68,7 +68,7 @@ object PBKDF2 {
         while (iter < iterations) {
           // u_2 through u_c : calculate u_n and xor it with the previous value
           u = prf(u)
-          xor(buff, u)
+          xorInPlace(buff, u)
           iter += 1
         }
 
