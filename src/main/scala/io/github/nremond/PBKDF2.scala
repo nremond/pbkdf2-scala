@@ -23,7 +23,7 @@ object PBKDF2 {
 
   private[this] def bytesFromInt(i: Int) = ByteBuffer.allocate(4).putInt(i).array
 
-  private[this] def xor(buff: Array[Int], a2: Array[Byte]) {
+  private[this] def xor(buff: Array[Int], a2: Array[Byte]): Unit = {
     val b2 = ByteBuffer.wrap(a2).asIntBuffer
 
     val len = buff.array.size

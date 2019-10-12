@@ -1,6 +1,6 @@
 # PBKDF2 [![Build Status](https://travis-ci.org/nremond/pbkdf2-scala.svg?branch=master)](https://travis-ci.org/nremond/pbkdf2-scala)
 
-*pbkdf2-scala* is an implementation of [PBKDF2] in Scala. It is cross-compiled for Scala 2.10, 2.11, and 2.12.
+*pbkdf2-scala* is an implementation of [PBKDF2] in Scala. It is cross-compiled for Scala 2.10, 2.11, 2.12, and 2.13.
 
 
 For using it, you can add the following dependency in SBT.
