@@ -28,6 +28,8 @@ scalariformPreferences := ScalariformKeys.preferences.value
       .setPreference(IndentLocalDefs, true)
 
 /// Publishing
+publishTo := sonatypePublishToBundle.value
+
 pomExtra in Global :=
   <url>http://github.com/nremond/pbkdf2-scala</url>
   <licenses>
