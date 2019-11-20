@@ -69,3 +69,5 @@ releaseProcess := Seq[ReleaseStep](
   ReleaseStep(releaseStepCommand("sonatypeReleaseAll"), enableCrossBuild = true),
   pushChanges
 )
+
+usePgpKeyHex("39566741592AD58743524321185B009D719F2229")
