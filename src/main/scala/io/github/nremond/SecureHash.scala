@@ -49,12 +49,12 @@ object SecureHash {
    * p0\$00004e20HmacSHA256\$mOCtN/Scjry0uIALe4bCCrL9eL8aWEA/\$hDxtqCnBF1MS5qIOxHeDAZ23QEmqdL7796I0pVJ2yvQ
    *
    * @param password  the password to hash
-   * @param iterations the number of encryption iterations, default to 20000
+   * @param iterations the number of encryption iterations, default to 120000
    * @param dkLength derived-key length, default to 32
    * @param cryptoAlgo HMAC+SHA512 is the default as HMAC+SHA1 is now considered weak
    * @param saltLength length of the salt, default to 24
    */
-  def createHash(password: String, iterations: Int = 20000,
+  def createHash(password: String, iterations: Int = 120000,
                  dkLength: Int = 32, cryptoAlgo: String = "HmacSHA512", saltLength: Int = 24): String = {
     val salt = {
       val b = new Array[Byte](saltLength)
