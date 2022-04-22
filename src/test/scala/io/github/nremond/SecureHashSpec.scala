@@ -20,8 +20,10 @@ import java.nio.ByteBuffer
 import java.security.SecureRandom
 
 import org.scalatest._
+import flatspec._
+import matchers._
 
-class SecureHashSpec extends FlatSpec with Matchers with Inspectors {
+class SecureHashSpec extends AnyFlatSpec with should.Matchers with Inspectors {
 
   "SecureHash.internals" should "encode the output properly" in {
     import SecureHash.internals._

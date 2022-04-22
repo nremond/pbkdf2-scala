@@ -5,16 +5,27 @@ name := "pbkdf2-scala"
 
 organization := "io.github.nremond"
 
-scalaVersion := "2.13.8"
+scalaVersion := "3.1.2"
 
-crossScalaVersions := Seq("2.13.8", "2.12.15", "2.11.12")
+crossScalaVersions := Seq("3.1.2", "2.13.8", "2.12.15")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
-libraryDependencies ++= Seq(
-  "org.scalatest"   %% "scalatest"  % "3.0.8"   % Test,
-  "org.scalacheck"  %% "scalacheck" % "1.14.1"  % Test
-)
+libraryDependencies ++= {
+  CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, n)) =>
+      Seq(
+          "org.scalatest"   %% "scalatest"  % "3.2.11"   % Test,
+          "org.scalacheck" %% "scalacheck" % "1.15.4" % Test
+      )
+    case _ =>
+      Seq (
+          "org.scalatest"   %% "scalatest"  % "3.2.11"   % Test,
+          "org.scalacheck" %% "scalacheck" % "1.16.0" % Test
+      )
+  }
+}
+
 
 resolvers += "Sonatype OSS Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 

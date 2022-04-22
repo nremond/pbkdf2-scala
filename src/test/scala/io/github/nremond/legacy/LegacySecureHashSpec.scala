@@ -17,8 +17,10 @@
 package io.github.nremond.legacy
 
 import org.scalatest._
+import flatspec.AnyFlatSpec
+import matchers.should.Matchers
 
-class LegacySecureHashSpec extends FlatSpec with Matchers with Inspectors {
+class LegacySecureHashSpec extends AnyFlatSpec with Matchers with Inspectors {
   val secureHash = SecureHash()
   val passwords = Vector("password", ":-( or :-)", "2¢", """H"qvVL5.y629_BA;1%:f/[OGo/B]x*UR2X:OUO3C/UKus$q.%$q@xmkJk&<_k+|""")
 

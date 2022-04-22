@@ -1,7 +1,7 @@
 package io.github.nremond
 
 import io.github.nremond.SecureHash._
-import org.scalacheck.Prop.{ BooleanOperators, forAll }
+import org.scalacheck.Prop.{ propBoolean, forAll }
 import org.scalacheck.{ Gen, Properties }
 
 object SecureHashSpecification extends Properties("SecureHash") {
