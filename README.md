@@ -6,7 +6,7 @@
 For using it, you can add the following dependency in SBT.
 
 ```Scala
-libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.6.5"
+libraryDependencies += "io.github.nremond" %% "pbkdf2-scala" % "0.7.0"
 ```
 
 ## Standards Conformance
@@ -62,6 +62,8 @@ validatePassword and createHash output are compatible with [PassLib][PASS_LIB] f
 
 ## Release Notes
 
+* 0.6:
+Scala 2.13 and 3 support
 * 0.6:
 Scala 2.12 and 2.13 support
 * 0.5:
