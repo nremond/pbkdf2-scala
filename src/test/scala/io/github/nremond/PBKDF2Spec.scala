@@ -16,7 +16,9 @@
 
 package io.github.nremond
 
-import org.scalatest.{ FlatSpec, Matchers }
+import org.scalatest._
+import flatspec.AnyFlatSpec
+import matchers.should.Matchers
 
 import scala.io.Codec.UTF8
 
@@ -29,7 +31,7 @@ import scala.io.Codec.UTF8
  * See RFC6070 (http://tools.ietf.org/html/rfc6070)
  *
  */
-class PBKDF2Spec extends FlatSpec with Matchers {
+class PBKDF2Spec extends AnyFlatSpec with Matchers {
 
   def pbkdf2(password: String, salt: String, iterations: Int, dkLength: Int, cryptoAlgo: String) =
     toHex(PBKDF2(password.getBytes(UTF8.charSet), salt.getBytes(UTF8.charSet), iterations, dkLength, cryptoAlgo))
