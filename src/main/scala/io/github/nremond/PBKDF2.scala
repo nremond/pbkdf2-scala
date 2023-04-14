@@ -39,7 +39,7 @@ object PBKDF2 {
    *
    * HMAC+SHA256 is used as the default pseudo random function.
    *
-   * Right now 120000 iterations is the strictly recommended default minimum.
+   * Right now 210000 iterations is the strictly recommended default minimum.
    * https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#pbkdf2
    * The minimum increases every year, please keep that in mind.
    *
@@ -50,7 +50,7 @@ object PBKDF2 {
    * @param cryptoAlgo HMAC+SHA512 is the default and note that HMAC+SHA1 is now considered weak
    * @return the hashed password
    */
-  def apply(password: Array[Byte], salt: Array[Byte], iterations: Int = 120000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA512"): Array[Byte] = {
+  def apply(password: Array[Byte], salt: Array[Byte], iterations: Int = 210000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA512"): Array[Byte] = {
 
     val mac = crypto.Mac.getInstance(cryptoAlgo)
     mac.init(new crypto.spec.SecretKeySpec(password, "RAW"))
