@@ -27,11 +27,11 @@ import scala.annotation.tailrec
 /**
  *  This is the legacy API.
  *
- * @param iterations the number of encryption iterations. Default to 120000
+ * @param iterations the number of encryption iterations. Default to 210000
  * @param dkLength derived-key length, default to 32
  * @param cryptoAlgo HMAC+SHA512 is the default as HMAC+SHA1 is now considered weak
  */
-case class SecureHash(iterations: Int = 120000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA512") {
+case class SecureHash(iterations: Int = 210000, dkLength: Int = 32, cryptoAlgo: String = "HmacSHA512") {
 
   /**
    * Creates a hashed password using [[PBKDF2]]

@@ -26,9 +26,7 @@ should be set as high as possible, to make attacks as difficult as possible,
 without making legitimate applications unusably slow. 
 
 [Security Considerations section of RFC 3962][ITERS] provides a useful example 
-on how to consider that choice.
-
-The current default value is set to 20k. 
+on how to consider that choice.The current default value is set to 210000, based on the [OWASP Cheat Sheet Series][OWASP]. 
 
 ## Using the library
 
@@ -38,7 +36,7 @@ You can use the raw PBKDF2 function which as the following signature:
 object PBKDF2 {
   def apply(password: Array[Byte], 
             salt: Array[Byte], 
-            iterations: Int = 120000, 
+            iterations: Int = 210000, 
             dkLength: Int = 32, 
             cryptoAlgo: String = "HmacSHA512"): Array[Byte]
 }
@@ -49,7 +47,7 @@ Alternatively, you can use the following functions that will handle the salting 
 ```scala
 object SecureHash {
   def createHash(password: String,
-                 iterations: Int = 120000,
+                 iterations: Int = 210000,
                  dkLength: Int = 32,
                  cryptoAlgo: String = "HmacSHA512"): String
 
@@ -91,3 +89,4 @@ See the `license.txt` file for the terms under which it may be used and distribu
 [ITERS]: https://tools.ietf.org/html/rfc3962#page-6 "RFC 3962: Section 8"
 [NIST]: https://csrc.nist.gov/groups/ST/hash/statement.html "NIST Comments on Cryptanalytic Attacks on SHA-1"
 [PASS_LIB]: https://pythonhosted.org/passlib/lib/passlib.hash.pbkdf2_digest.html "PassLib"
+[OWASP]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html "OWASP: Password Storage Cheat Sheet"
